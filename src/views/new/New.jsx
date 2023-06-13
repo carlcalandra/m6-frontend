@@ -10,6 +10,7 @@ import axios from "../../api/api";
 import { useSelector, useDispatch } from "react-redux";
 import { addErrorToast } from "../../store/toastSlicer";
 import createToast from "../../utils/toast";
+import { activateLoader, deactivateLoader } from "../../store/loaderSlicer";
 
 const NewBlogPost = (props) => {
   const dispatch = useDispatch();
@@ -52,6 +53,7 @@ const NewBlogPost = (props) => {
     }
   };
   const handleSubmit = async (e) => {
+    dispatch(activateLoader());
     e.preventDefault();
     const post = await submitForm();
     if (coverImg) {
@@ -59,6 +61,7 @@ const NewBlogPost = (props) => {
       formDataImg.append("coverImg", coverImg);
       await submitImg(post._id, formDataImg);
     }
+    dispatch(deactivateLoader());
     navigate("/");
   };
 

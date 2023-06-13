@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addErrorToast } from "../../store/toastSlicer";
 import createToast from "../../utils/toast";
+import { activateLoader, deactivateLoader } from "../../store/loaderSlicer";
 const SignupForm = () => {
   const initialFormData = {
     email: "",
@@ -23,6 +24,7 @@ const SignupForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      dispatch(activateLoader());
       const response = await axios.post("/auth/signup", formData);
       if (avatarImg) {
         const avatarFormData = new FormData();
@@ -33,6 +35,7 @@ const SignupForm = () => {
           },
         });
       }
+      dispatch(deactivateLoader());
       navigate("/login");
     } catch (error) {
       const { errors } = error.response.data;

@@ -16,10 +16,6 @@ const AxiosInterceptor = () => {
   const navigate = useNavigate();
   useEffect(() => {
     const reqInterceptor = (config) => {
-        if (location.pathname !== "/") {
-            dispatch(activateLoader());
-        }
-      
       const token = localStorage.getItem("auth") || null;
       if (token) {
         config.headers["Authorization"] = token;
@@ -32,7 +28,6 @@ const AxiosInterceptor = () => {
       return Promise.reject(error);
     };
     const resInterceptor = (response) => {
-      dispatch(deactivateLoader());
       return response;
     };
     const errInteceptor = (error) => {
